@@ -14,7 +14,13 @@ import java.awt.event.KeyListener;
  */
 public class Movement implements KeyListener {
 
-    public boolean movingUp, movingDown, movingLeft, movingRight;
+    GamePanel gp;
+    public boolean Up, Down, Left, Right;
+
+    public Movement(GamePanel gp) {
+        this.gp=gp;
+
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -27,20 +33,53 @@ public class Movement implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
+        //Title state specific key handling
+        if(gp.gameState== gp.titleState){
+            if(code==KeyEvent.VK_UP){
+                gp.ui.commandNum--;
+                if(gp.ui.commandNum < 0) {
+                    gp.ui.commandNum = 1;
+                }
+            }
+            if(code==KeyEvent.VK_DOWN){
+                gp.ui.commandNum++;
+                if(gp.ui.commandNum > 1) {
+                    gp.ui.commandNum = 0;
+                }
+            }
+            if(gp.ui.commandNum==0){
+                if(code==KeyEvent.VK_ENTER){
+                    gp.gameState= gp.playState;
+                }
+            }
+            if(gp.ui.commandNum==1){
+                if(code==KeyEvent.VK_ENTER){
+                    System.exit(0);
+                }
+            }
+        }
+
         if (code == KeyEvent.VK_LEFT) {
-            movingLeft = true;
+            Left = true;
         }
 
         if (code == KeyEvent.VK_RIGHT) {
-            movingRight = true;
+            Right = true;
         }
 
         if (code == KeyEvent.VK_DOWN) {
-            movingDown = true;
+            Down = true;
         }
 
         if (code == KeyEvent.VK_UP) {
-            movingUp = true;
+            Up = true;
+        }
+        if (code == KeyEvent.VK_P) {
+            if(gp.gameState==gp.playState) {
+                gp.gameState = gp.pauseState;
+            } else if(gp.gameState == gp.pauseState) {
+                gp.gameState = gp.playState;
+            }
         }
     }
 
@@ -49,20 +88,20 @@ public class Movement implements KeyListener {
         int code = e.getKeyCode();
 
         if (code == KeyEvent.VK_LEFT) {
-            movingLeft = false;
+            Left = false;
           
         }
 
         if (code == KeyEvent.VK_RIGHT) {
-            movingRight = false;
+            Right = false;
         }
 
         if (code == KeyEvent.VK_DOWN) {
-            movingDown = false;
+            Down = false;
         }
 
         if (code == KeyEvent.VK_UP) {
-            movingUp = false;
+            Up = false;
         }
 
     }

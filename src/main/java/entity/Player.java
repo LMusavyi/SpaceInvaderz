@@ -5,50 +5,68 @@
  */
 package entity;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+
 import main.GamePanel;
 import main.Movement;
+import object.OBJ_Health;
+
 
 /**
- *
  * @author LazTheGreat
  */
 public class Player extends Entity {
 
-    GamePanel gp;
-    Movement move; 
-    int ship;
 
-    public Player(GamePanel gp, Movement move) {
-        this.gp = gp;
-        this.move = move;
+    Movement direction;
+
+
+
+    public Player( GamePanel gp, Movement direction) {
+        super(gp);
+
+        this.direction=direction;
+
+        solidArea = new Rectangle(8,16,32,32);
+
+
 
         setDefaultValues();
         getProperSprite();
+        gp.setupGame();
 
     }
 
     public void setDefaultValues() {
         x = 100;
-        y = 100;
+        y = 100 ;
         speed = 4;
-        //direction = null;
-     
+        ship = 1;
+
+        maxHealth = 6;
+        health = maxHealth;
+
     }
 
-    public void getProperSprite() {
-  
-        try {
 
-          shot1 = ImageIO.read(new File()("/player/boy_down_1.png"));
-          //shot2 = ImageIO.read(getClass().getResourceAsStream("./../src/res/player/Ship2.png"));
-          //shot3 = ImageIO.read(getClass().getResourceAsStream("./../src/res/player/Ship3.png"));
-         
+
+    //MANAGES PLAYER ANIMATION
+    public void getProperSprite() {
+
+        try {
+            //Each couple is the same ship with two different frames for the ships flame.
+            shot1x1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/Ship11.png"));
+            shot1x2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/Ship12.png"));
+
+            shot2x1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/Ship21.png"));
+            shot2x2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/Ship22.png"));
+
+            shot3x1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/Ship31.png"));
+            shot3x2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream("player/Ship32.png"));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,46 +74,104 @@ public class Player extends Entity {
 
     public void update() {
 
-        if (move.movingUp == true) {
-           
+        if (direction.Up) {
+
             y -= speed;
         }
 
-        if (move.movingDown == true) {
-          
+        if (direction.Down) {
+
             y += speed;
         }
-        if (move.movingLeft == true) {
-           
+        if (direction.Left) {
+
             x -= speed;
+
         }
 
-        if (move.movingRight == true) {
-        
+        if (direction.Right) {
+
             x += speed;
+
         }
 
+        collisionOn = false;
+        gp.collide.checkSpace(this);
+
+       /* if(collisionOn == false) {
+            if (direction.Up) {
+
+                y -= speed;
+            }
+
+            if (direction.Down) {
+
+                y += speed;
+            }
+            if (direction.Left) {
+
+                x -= speed;
+
+            }
+
+            if (direction.Right) {
+
+                x += speed;
+
+            }
+
+        }*/
+
+       // int objIndex = gp.collide.checkObject(this, true);
+
+        //Sprite counter is updated at rate of 60/s.
+        spriteCounter++;
+        if (spriteCounter > 5) {
+            if (spriteNumber == 0) {
+                spriteNumber = 1;
+            } else if (spriteNumber == 1) {
+                spriteNumber = 0;
+            }
+            spriteCounter = 0;
+        }
     }
 
     public void draw(Graphics2D g2) {
 
-        //  g2.setColor(Color.WHITE);
-        //  g2.fillRect(x, y, gp.unitSize, gp.unitSize);
         BufferedImage image = null;
 
-        if (spriteCounter == 1) {
-            image = shot1;
+        //Flickers between two sprites for first ship
+        if(ship==1) {
+            if (spriteNumber == 0) {
+                image = shot1x1;
+            }
+            if (spriteNumber == 1) {
+                image = shot1x2;
+            }
         }
-      /*  if (ship == 2) {
-            image = shot2;
-        }
-        if (ship == 3) {
-            image = shot3;
 
+        //Flickers between two sprites for second ship
+        if(ship==2) {
+            if (spriteNumber == 0) {
+                image = shot2x1;
+            }
+            if (spriteNumber == 1) {
+                image = shot2x2;
+            }
         }
-*/
-        g2.drawImage(image, x, y, gp.unitSize, gp.unitSize, null);
 
+        //Flickers between two sprites for third ship
+        if(ship==3) {
+            if (spriteNumber == 0) {
+                image = shot3x1;
+            }
+            if (spriteNumber == 1) {
+                image = shot3x2;
+            }
+        }
+
+        g2.drawImage(image, x, y, gp.unitSize * 2, gp.unitSize * 2, null);
     }
-
 }
+
+
