@@ -23,6 +23,7 @@ public class Minions extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
+        getImage();
     }
     public void getImage () {
         up1 = setup("/enemy/Minion11");

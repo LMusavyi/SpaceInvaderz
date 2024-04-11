@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
     public UtilityTool uTool = new UtilityTool();
     public Player player = new Player(this, direction);
     public Entity obj[] = new Entity[10];
-    public Entity Minions[] = new Entity[40];
+    public Entity Minions[] = new Entity[30];
     ArrayList<Entity> entityList = new ArrayList<>();
 
 
@@ -133,8 +133,7 @@ public class GamePanel extends JPanel implements Runnable {
             for(int i = 0 ; i< entityList.size(); i++){
                 entityList.get(i).draw(g2);
             }
-            for(int i = 0 ; i< entityList.size(); i++){
-                entityList.remove(i);
+            entityList.clear();
             }
 
             ui.draw(g2);

@@ -19,7 +19,7 @@ public class AssetSetter {
     }
 
     public void setMinions( ) {
-        //Add for loop that iterates x number of monsters using "i"
+        //Add for loop that iterates x number of monsters using "i (first row of minions)"
         gp.Minions[0] = new Minions(gp);
         gp.Minions[0].x = gp.unitSize*21;
         gp.Minions[0].y = gp.unitSize*21;

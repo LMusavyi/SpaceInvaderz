@@ -98,6 +98,11 @@ public class Player extends Entity {
         collisionOn = false;
         gp.collide.checkSpace(this);
 
+        int objIndex = gp.collide.checkObject(this, true);
+        pickUpObject(objIndex);
+
+        int minionIndex = gp.collide.checkEntity(this, gp.Minions);
+
        /* if(collisionOn == false) {
             if (direction.Up) {
 
@@ -122,7 +127,7 @@ public class Player extends Entity {
 
         }*/
 
-       // int objIndex = gp.collide.checkObject(this, true);
+       //int objIndex = gp.collide.checkObject(this, true);
 
         //Sprite counter is updated at rate of 60/s.
         spriteCounter++;
@@ -133,6 +138,19 @@ public class Player extends Entity {
                 spriteNumber = 0;
             }
             spriteCounter = 0;
+        }
+    }
+
+    public void pickUpObject (int i){
+
+        if(i != 999) {
+           String objectName = gp.obj[i].name;
+
+           switch (objectName) {
+               case "Drop":
+
+           }
+
         }
     }
 

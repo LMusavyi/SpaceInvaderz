@@ -27,7 +27,7 @@ public class Entity {
     public int speed;
     public int ship;
     public BufferedImage shot1x1, shot1x2, shot2x1, shot2x2, shot3x1, shot3x2;
- public BufferedImage image, image2, image3, up1,up2,left1,left2,down1,down2,right1,right2;
+    public BufferedImage image, image2, image3, up1,up2,left1,left2,down1,down2,right1,right2;
     public int spriteCounter = 0;
     public int spriteNumber = 0;
 
